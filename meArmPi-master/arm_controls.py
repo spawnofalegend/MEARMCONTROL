@@ -1,9 +1,8 @@
 from pynput import keyboard
-import meArm
 import Calibrate
 
 
-arm = meArm.meArm()
+
 
 ###############################################################################################################################
 # General options settings #
@@ -66,17 +65,17 @@ keymapping = [
 
 def on_press(key):
     if key.char == setkey:
-        autopoints.append(arm.getPos())
+        autopoints.append(Currentvals)
 
     elif key.char != setkey:
         for i in keymapping: 
-            vals = minmaxvals[i[1]]
+            vals = minmaxvals[i]
             x = vals[0]
             y = vals[1]
 
             if key.char == i[0] and x < Currentvals[i[1]] < y:
                 Calibrate.set_servo_pulse(i[2], Currentvals[i[1]] + i[3] )
-                Currentvals[i] = Currentvals[i[1]] + i[3]
+                Currentvals[i[1]] = Currentvals[i[1]] + i[3]
     else:
         return True
 
