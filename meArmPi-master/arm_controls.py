@@ -26,9 +26,11 @@ Changeamount = 10
 
 autopoints=[]
 
-# Set vals to the middle values
+# Set values to the middle values of calibration
 Currentvals = [1460,1460,1125,1600]
 
+
+#set values to min and max of servos from calibration, (set first value to smaller regardless)
 minmaxvals = [
     # Values for Base
     [500, 2465],
@@ -37,7 +39,7 @@ minmaxvals = [
     [700, 2300],
 
     # Values for Elbow
-    [1425, 600],
+    [600, 1425],
 
     # Values for Gripper
     [400, 1600]
