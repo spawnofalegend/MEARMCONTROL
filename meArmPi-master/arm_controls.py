@@ -1,9 +1,6 @@
 from pynput import keyboard
 import Calibrate
 
-
-
-
 ###############################################################################################################################
 # General options settings #
 # control set for key mapping
@@ -88,6 +85,12 @@ def on_release(key):
     if key == keyboard.Key.esc:
         # Stop listener
         return False
+
+
+Calibrate.set_servo_pulse(0, Currentvals[0])
+Calibrate.set_servo_pulse(1, Currentvals[1])
+Calibrate.set_servo_pulse(14, Currentvals[2])
+Calibrate.set_servo_pulse(15, Currentvals[3])
 
 
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
