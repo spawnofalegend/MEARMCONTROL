@@ -1,6 +1,5 @@
 from pynput import keyboard
 import Calibrate
-import time
 
 ###############################################################################################################################
 # General options settings #
@@ -22,15 +21,13 @@ Gripperdec = 'f'
 
 Changeamount = 10
 
-autopoints = {
-
-}
+autopoints=[]
 
 # Set values to the middle values of calibration
-Currentvals = [1460,1460,1125,1000]
+Currentvals = [1460,1460,1125,1600]
 
 
-#set values to min and max of servos from calibration, (set first value to smaller calibration regardless)
+#set values to min and max of servos from calibration, (set first value to smaller regardless)
 minmaxvals = [
     # Values for Base
     [500, 2465],
@@ -67,19 +64,19 @@ keymapping = [
 
 def on_press(key):
     if key.char == setkey:
-        autopoints[str(time.time)] = Currentvals
-        print(autopoints)
+        autopoints.append(Currentvals.copy())
+        print ('Currently stored point values', autopoints)
 
     elif key.char != setkey:
         for i in keymapping: 
-            vals = minmaxvals[i[1]]
+            vals = minmaxvals[i]
             x = vals[0]
             y = vals[1]
 
             if key.char == i[0] and x < Currentvals[i[1]] < y:
                 Calibrate.set_servo_pulse(i[2], Currentvals[i[1]] + i[3] )
                 Currentvals[i[1]] = Currentvals[i[1]] + i[3]
-                print(Currentvals)
+                print("Current servo impulse values:",Currentvals)
     else:
         return True
 

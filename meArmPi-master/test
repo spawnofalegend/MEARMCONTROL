@@ -1,0 +1,41 @@
+import time
+
+dictionary = {
+    "key": "value",
+    "key2": "value2"
+}
+
+nested = {
+    "dictionary1": {
+        "d1key1": "d1value1",
+        "d1key2": "d1value2"
+    },
+    "dictionary2": {
+        "d2key1": "d2value1"
+    }
+}
+
+currentPositions = [2, 2, 2, 2]
+
+savedPositions = {
+    "time1": [0, 0, 0, 0],
+    "time2": [1, 1, 1, 1],
+    "someTimeValue": [2, 2, 2, 2]
+}
+
+# assign position values
+currentPositions["base"] = 500
+currentPositions["shoulder"] = 900
+
+# get the current position of the base
+value = currentPositions["base"]
+
+# press D --> store the current position
+
+# press H --> moves the gripper open and closed
+# press H --> reference the object, positions["gripper"] = positions["gripper"] + 500
+
+# press D -->
+
+savedPositions[str(time.time())] = currentPositions
+
