@@ -1,12 +1,6 @@
 import pandas as pd
+import Calibrate
 import time
-
-# Assuming the 'Calibrate' class is defined elsewhere in your code.
-# Here's a placeholder for the Calibrate class with set_servo_pulse method.
-class Calibrate:
-    @staticmethod
-    def set_servo_pulse(channel, pulse):
-        print(f"Setting servo on channel {channel} to pulse {pulse}")
 
 # Read CSV data into DataFrame
 df = pd.read_csv('../autopoints.csv')
