@@ -69,7 +69,7 @@ def on_press(key):
 
     elif key.char != setkey:
         for i in keymapping: 
-            vals = minmaxvals[i]
+            vals = minmaxvals[i[1]]
             x = vals[0]
             y = vals[1]
 
