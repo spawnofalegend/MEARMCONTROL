@@ -1,4 +1,5 @@
 from pynput import keyboard
+import pandas as pd
 import Calibrate
 
 ###############################################################################################################################
@@ -19,12 +20,13 @@ Elbowdec = 'd'
 Gripperinc = 'r'
 Gripperdec = 'f'
 
-Changeamount = 10
+inc = 10
+dec = -10
 
 autopoints=[]
 
 # Set values to the middle values of calibration
-Currentvals = [1460,1460,1125,1600]
+Currentvals = [1460,1460,1125,1000]
 
 
 #set values to min and max of servos from calibration, (set first value to smaller regardless)
@@ -47,22 +49,29 @@ minmaxvals = [
 
 keymapping = [
     # Format is [ keyassociated/movement , relative index for min/max values, channel, value and direction of change]
-    [Baseinc, 0, 0, Changeamount],
-    [Basedec, 0, 0, -Changeamount],
+    [Baseinc, 0, 0, inc],
+    [Basedec, 0, 0, dec],
 
-    [Sholderinc, 1, 1, Changeamount],
-    [Sholderdec, 1, 1, -Changeamount],
+    [Sholderinc, 1, 1, inc],
+    [Sholderdec, 1, 1, dec],
 
-    [Elbowinc, 2, 14, Changeamount],
-    [Elbowdec, 2, 14, -Changeamount],
+    [Elbowinc, 2, 14, inc],
+    [Elbowdec, 2, 14, dec],
 
-    [Gripperinc, 3, 15, -Changeamount],
-    [Gripperdec, 3, 15, Changeamount]
+    [Gripperinc, 3, 15, dec],
+    [Gripperdec, 3, 15, inc]
 ]
 
 
 
 def on_press(key):
+
+    if key == keyboard.Key.esc:
+        # Stop listener
+        df = pd.DataFrame(autopoints, columns=["base", "shoulder", "elbow", "grip"])
+        df.to_csv('autopoints.csv', index=False)
+        return False
+
     if key.char == setkey:
         autopoints.append(Currentvals.copy())
         print ('Currently stored point values', autopoints)
@@ -73,7 +82,15 @@ def on_press(key):
             x = vals[0]
             y = vals[1]
 
-            if key.char == i[0] and x < Currentvals[i[1]] < y:
+
+            #statement for decreasing
+            if key.char == i[0] and i[3] == dec and x < Currentvals[i[1]] :
+                Calibrate.set_servo_pulse(i[2], Currentvals[i[1]] + i[3] )
+                Currentvals[i[1]] = Currentvals[i[1]] + i[3]
+                print("Current servo impulse values:",Currentvals)
+            
+            #statement for increasing
+            if key.char == i[0] and i[3] == inc and Currentvals[i[1]] < y:
                 Calibrate.set_servo_pulse(i[2], Currentvals[i[1]] + i[3] )
                 Currentvals[i[1]] = Currentvals[i[1]] + i[3]
                 print("Current servo impulse values:",Currentvals)
@@ -97,4 +114,5 @@ Calibrate.set_servo_pulse(15, Currentvals[3])
 
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
+
 
